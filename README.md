@@ -19,12 +19,12 @@ To use this application, you'll need:
 
 ## Usage
 
-Clone or download the repository.  
-Set the OpenAI API key in the .chatgpt.env file located in your home directory.  
-Run the application using deno run --allow-net --allow-env --allow-read ./your_file_name.ts.  
-Interact with the chatbot by typing your input after the prompt 🤖 Please enter input >>>.  
-To quit or exit the application, type quit or exit.  
-To clear the conversation log, type clear.
+1. Clone or download the repository.
+2. Set the OpenAI API key in the .chatgpt.env file located in your home directory.
+3. Run the application using deno run --allow-net --allow-env --allow-read ./your_file_name.ts.
+4. Interact with the chatbot by typing your input after the prompt 🤖 Please enter input >>>.
+5. To quit or exit the application, type quit or exit.
+6. To clear the conversation log, type clear.
 
 ## Notes
 
