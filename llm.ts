@@ -20,6 +20,11 @@ export const completeChat = async (
     },
     body,
   });
+
+  if (res.status !== 200) {
+    const body = await res.text();
+    throw new Error(`Failed to respond ${res.status}: ${body}`);
+  }
   const data = await res.json();
 
   const choice = 0;

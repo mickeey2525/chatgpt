@@ -7,12 +7,12 @@ const { OPENAI_API_KEY: apiKey } = await mod.load({ envPath });
 
 const messages: Message[] = [];
 
-// Set system prompt at this timing
 const systemPrompt: Message = {
   role: "system",
   content: "You should behave like kind chatbot",
 };
 
+messages.push(systemPrompt);
 // For stopping coversations when user type Ctrl+C
 
 const sigIntHandler = () => {
@@ -20,8 +20,6 @@ const sigIntHandler = () => {
   Deno.exit();
 };
 Deno.addSignalListener("SIGINT", sigIntHandler);
-
-messages.push(systemPrompt);
 
 while (true) {
   const input: string | null = prompt("🤖 Please enter input >>>");
@@ -51,16 +49,26 @@ while (true) {
     content: input!,
   };
   messages.push(userPrompt);
-
-  const res = await completeChat(apiKey, messages);
-  if (!res?.content) {
-    console.log("failed to reponde");
-    Deno.exit(1);
+  try {
+    const res = await completeChat(apiKey, messages);
+    if (!res?.content) {
+      console.log("failed to reponde");
+      Deno.exit(1);
+    }
+    const assistant: Message = {
+      role: "assistant",
+      content: res.content,
+    };
+    messages.push(assistant);
+    console.log(`🤖 : %c${res.content}`, "color: yellow; font-weight: bold");
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(
+        `🤖 : %c failed to respond ${error}`,
+        "color: red; font-weight: bold"
+      );
+      console.log(`🤖 : %c quiting...`, "color: red; font-weight: bold");
+      Deno.exit(1);
+    }
   }
-  const assistant: Message = {
-    role: "assistant",
-    content: res.content,
-  };
-  messages.push(assistant);
-  console.log(`🤖 : %c${res.content}`, "color: yellow; font-weight: bold");
 }
